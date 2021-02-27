@@ -1,0 +1,17 @@
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\bin\Debug\netcoreapp3.1\OC2_P1_201800523.exe
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\bin\Debug\netcoreapp3.1\OC2_P1_201800523.deps.json
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\bin\Debug\netcoreapp3.1\OC2_P1_201800523.runtimeconfig.json
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\bin\Debug\netcoreapp3.1\OC2_P1_201800523.runtimeconfig.dev.json
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\bin\Debug\netcoreapp3.1\OC2_P1_201800523.dll
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\bin\Debug\netcoreapp3.1\OC2_P1_201800523.pdb
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\bin\Debug\netcoreapp3.1\Irony.dll
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\obj\Debug\netcoreapp3.1\OC2_P1_201800523.csprojAssemblyReference.cache
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\obj\Debug\netcoreapp3.1\OC2_P1_201800523.Form1.resources
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\obj\Debug\netcoreapp3.1\OC2_P1_201800523.csproj.GenerateResource.cache
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\obj\Debug\netcoreapp3.1\OC2_P1_201800523.AssemblyInfoInputs.cache
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\obj\Debug\netcoreapp3.1\OC2_P1_201800523.AssemblyInfo.cs
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\obj\Debug\netcoreapp3.1\OC2_P1_201800523.csproj.CoreCompileInputs.cache
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\obj\Debug\netcoreapp3.1\OC2_P1_201800523.csproj.CopyComplete
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\obj\Debug\netcoreapp3.1\OC2_P1_201800523.dll
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\obj\Debug\netcoreapp3.1\OC2_P1_201800523.pdb
+C:\Users\daab_\Desktop\Programación\OC2_P1_201800523\obj\Debug\netcoreapp3.1\OC2_P1_201800523.genruntimeconfig.cache

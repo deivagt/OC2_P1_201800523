@@ -1,0 +1,29 @@
+﻿
+
+INIT -> COSAS
+
+COSAS -> program identificador punto_coma USES INSTRUCCIONES CUERPO_PROGRAMA
+
+USES -> uses id punto_coma
+	| uses id , OTRO_USES
+
+OTRO_USES -> id , OTRO_USES
+	| id punto_coma
+
+INSTRUCCIONES -> INSTRUCCION INSTRUCCIONES
+	| INSTRUCCIONES
+
+INSTRUCCION -> CONSTANTE
+	| VARIABLE
+	| FUNCION_O_PROCEDIMIENTO
+	| Empty
+
+FUNCION_O_PROCEDIMIENTO -> FUNCION
+	| PROCEDIMIENTO
+
+FUNCION -> function id abrir_parentesis PARAMETROS cerrar_parentesis dos_puntos tipo punto_coma OTRA_FUNCION begin end punto_coma
+	| 
+OTRA_FUNCION -> FUNCION
+	|Empty
+
+CUERPO_PROGRAMA -> begin end punto
