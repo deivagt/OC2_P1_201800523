@@ -36,6 +36,19 @@ namespace OC2_P1_201800523.AST
             var rtrue = ToTerm(terminales.rtrue);
             var rfalse = ToTerm(terminales.rfalse);
             var cadena = new StringLiteral(terminales.cadena, "\'");
+            var rthen = ToTerm(terminales.rthen);
+            var rif = ToTerm(terminales.rif);
+            var relse = ToTerm(terminales.relse);
+            var rcase = ToTerm(terminales.rcase);
+            var rof = ToTerm(terminales.rof);
+            var writeln = ToTerm(terminales.writeln);
+            var rwhile = ToTerm(terminales.rwhile);
+            var rdo = ToTerm(terminales.rdo);
+            var rfor = ToTerm(terminales.rfor);
+            var to = ToTerm(terminales.to);
+            var repeat = ToTerm(terminales.repeat);
+            var until = ToTerm(terminales.until);
+
             var comentarioUL = new CommentTerminal(terminales.comentarioUL, "//", new[] { "\n" });
             var comentarioMLTipo1 = new CommentTerminal(terminales.comentarioMLTipo1, "(*", new[] { "*)" });
             var comentarioMLTipo2 = new CommentTerminal(terminales.comentarioMLTipo2, "{", new[] { "}" });
@@ -93,7 +106,6 @@ namespace OC2_P1_201800523.AST
 
             NonTerminal VARIABLE = new NonTerminal(noterminales.VARIABLE);
             NonTerminal OTRA_DECL_VARIABLE = new NonTerminal(noterminales.OTRA_DECL_VARIABLE);
-            NonTerminal ASIGNAR_VALOR = new NonTerminal(noterminales.ASIGNAR_VALOR);
 
             NonTerminal CONSTANTE = new NonTerminal(noterminales.CONSTANTE);
             NonTerminal OTRA_CONSTANTE = new NonTerminal(noterminales.OTRA_CONSTANTE);
@@ -108,6 +120,14 @@ namespace OC2_P1_201800523.AST
             NonTerminal SENTENCIAS = new NonTerminal(noterminales.SENTENCIAS);
             NonTerminal SENTENCIA = new NonTerminal(noterminales.SENTENCIA);
             NonTerminal EXPRESION = new NonTerminal(noterminales.EXPRESION);
+
+            NonTerminal CASOS = new NonTerminal(noterminales.CASOS);
+            NonTerminal CASO = new NonTerminal(noterminales.CASO);
+
+
+
+            //Control
+
 
             // NonTerminal PARAMETROS = new NonTerminal(noterminales.PARAMETROS);
 
@@ -163,21 +183,37 @@ namespace OC2_P1_201800523.AST
                 | Empty
                 ;
 
-
-
             SENTENCIAS.Rule = SENTENCIAS + SENTENCIA
                 | SENTENCIA
                 | Empty
                 ;
 
-            SENTENCIA.Rule = ASIGNAR_VALOR
+            SENTENCIA.Rule = id + dos_puntos_igual + EXPRESION + punto_coma //Asignar con ;
+                | rif + EXPRESION + rthen + begin + SENTENCIAS + end + punto_coma
+                | rif + EXPRESION + rthen + begin + SENTENCIAS + end + PreferShiftHere() + relse + begin + SENTENCIAS + end + punto_coma
+                | rcase + EXPRESION + rof + CASOS + end + punto_coma
+                | rcase + EXPRESION + rof + CASOS + end + PreferShiftHere() + relse + begin + SENTENCIAS + end + punto_coma
+                | rwhile + EXPRESION + rdo + begin + SENTENCIAS + end + punto_coma
+                | rfor + id + dos_puntos_igual + EXPRESION + to + EXPRESION + rdo + begin + SENTENCIAS + end + punto_coma
+                | repeat + begin + SENTENCIAS + end + until + EXPRESION + punto_coma
+                | writeln + abrir_parentesis + EXPRESION + cerrar_parentesis + punto_coma
+
+                ;
+            CASOS.Rule = CASOS + CASO
+                | CASO
                 ;
 
-            ASIGNAR_VALOR.Rule = id + dos_puntos_igual + EXPRESION + punto_coma
+            CASO.Rule = EXPRESION + dos_puntos + begin + SENTENCIAS + end + punto_coma
                 ;
 
-            EXPRESION.Rule = uminus + EXPRESION
-                | not + EXPRESION                
+           
+
+           
+
+            
+
+            EXPRESION.Rule = uminus + EXPRESION + PreferShiftHere()
+                | not + EXPRESION
                 | EXPRESION + por + EXPRESION
                 | EXPRESION + div + EXPRESION
                 | EXPRESION + barra_div + EXPRESION
@@ -186,14 +222,13 @@ namespace OC2_P1_201800523.AST
                 | EXPRESION + mas + EXPRESION
                 | EXPRESION + menos + EXPRESION
                 | EXPRESION + or + EXPRESION
-                //Maybe falta el igual
+                | EXPRESION + igual + EXPRESION
                 | EXPRESION + distinto + EXPRESION
                 | EXPRESION + menor + EXPRESION
                 | EXPRESION + menor_igual + EXPRESION
                 | EXPRESION + mayor +EXPRESION
                 | EXPRESION + mayor_igual + EXPRESION
-                | EXPRESION + rin + EXPRESION
-                
+                | EXPRESION + rin + EXPRESION 
                 | numero
                 | cadena
                 | id
