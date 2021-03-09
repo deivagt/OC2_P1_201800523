@@ -14,8 +14,17 @@ namespace OC2_P1_201800523.AST
             LanguageData leng = new LanguageData(gram);
             Parser parser = new Parser(leng);
             ParseTree arbol = parser.Parse(entrada);
-            ParseTreeNode raiz = arbol.Root;
-            recorrer(raiz);
+            try
+            {
+                ParseTreeNode raiz = arbol.Root;
+                manejadorArbol.iniciar(raiz);
+                manejadorArbol.ejecutar();
+                System.Diagnostics.Debug.WriteLine(raiz.Term);
+                recorrer(raiz);
+            } catch(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+            }
 
         }
 

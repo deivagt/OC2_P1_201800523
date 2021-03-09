@@ -24,7 +24,9 @@ namespace OC2_P1_201800523.AST
             var program = ToTerm(terminales.program);
             var var = ToTerm(terminales.var);
             var rconst = ToTerm(terminales.rconst);
+            var rtype = ToTerm(terminales.rtype);
             var function = ToTerm(terminales.function);
+            var procedure = ToTerm(terminales.procedure);
             var begin = ToTerm(terminales.begin);
             var end = ToTerm(terminales.end);
             var not = ToTerm(terminales.not);
@@ -36,6 +38,7 @@ namespace OC2_P1_201800523.AST
             var rtrue = ToTerm(terminales.rtrue);
             var rfalse = ToTerm(terminales.rfalse);
             var cadena = new StringLiteral(terminales.cadena, "\'");
+            var rarray = ToTerm(terminales.rarray);
             var rthen = ToTerm(terminales.rthen);
             var rif = ToTerm(terminales.rif);
             var relse = ToTerm(terminales.relse);
@@ -48,6 +51,11 @@ namespace OC2_P1_201800523.AST
             var to = ToTerm(terminales.to);
             var repeat = ToTerm(terminales.repeat);
             var until = ToTerm(terminales.until);
+            var rbreak = ToTerm(terminales.rbreak);
+            var rcontinue = ToTerm(terminales.rcontinue);
+            var robject = ToTerm(terminales.robject);
+            var write = ToTerm(terminales.write);
+
 
             var comentarioUL = new CommentTerminal(terminales.comentarioUL, "//", new[] { "\n" });
             var comentarioMLTipo1 = new CommentTerminal(terminales.comentarioMLTipo1, "(*", new[] { "*)" });
@@ -68,6 +76,8 @@ namespace OC2_P1_201800523.AST
             var coma = ToTerm(terminales.coma);
             var abrir_parentesis = ToTerm(terminales.abrir_parentesis);
             var cerrar_parentesis = ToTerm(terminales.cerrar_parentesis);
+            var abrir_corchete = ToTerm(terminales.abrir_corchete);
+            var cerrar_corchete = ToTerm(terminales.cerrar_corchete);
             var dos_puntos_igual = ToTerm(terminales.dos_puntos_igual);
             var dos_puntos = ToTerm(terminales.dos_puntos);
             var igual = ToTerm(terminales.igual);
@@ -82,6 +92,7 @@ namespace OC2_P1_201800523.AST
             var menor_igual = ToTerm(terminales.menor_igual);
             var mayor = ToTerm(terminales.mayor);
             var mayor_igual = ToTerm(terminales.mayor_igual);
+            var dospunticos = ToTerm(terminales.dospunticos);
 
 
             #region Otros
@@ -110,6 +121,11 @@ namespace OC2_P1_201800523.AST
             NonTerminal CONSTANTE = new NonTerminal(noterminales.CONSTANTE);
             NonTerminal OTRA_CONSTANTE = new NonTerminal(noterminales.OTRA_CONSTANTE);
 
+            NonTerminal INDEXADO = new NonTerminal(noterminales.INDEXADO);
+
+            NonTerminal DECLTIPOS = new NonTerminal(noterminales.DECLTIPOS);
+            NonTerminal DECLVARIOST = new NonTerminal(noterminales.DECLVARIOST);
+
             NonTerminal TIPO = new NonTerminal(noterminales.TIPO);
             NonTerminal TRETORNO = new NonTerminal(noterminales.TRETORNO);
 
@@ -124,6 +140,15 @@ namespace OC2_P1_201800523.AST
             NonTerminal CASOS = new NonTerminal(noterminales.CASOS);
             NonTerminal CASO = new NonTerminal(noterminales.CASO);
 
+            NonTerminal PARAMETROS = new NonTerminal(noterminales.PARAMETROS);
+
+            NonTerminal VALOR_REFERENCIA = new NonTerminal(noterminales.VALOR_REFERENCIA);
+            NonTerminal VALOR = new NonTerminal(noterminales.VALOR);
+            NonTerminal REFERENCIA = new NonTerminal(noterminales.REFERENCIA);
+
+            NonTerminal PARAMETROSWRITELN = new NonTerminal(noterminales.PARAMETROSWRITELN);
+            NonTerminal DECLARACIONATRIBUTOS = new NonTerminal(noterminales.DECLARACIONATRIBUTOS);
+            NonTerminal OTRADECLARACIONATRIBUTOS = new NonTerminal(noterminales.OTRADECLARACIONATRIBUTOS);
 
 
             //Control
@@ -134,12 +159,13 @@ namespace OC2_P1_201800523.AST
             #endregion
 
             #region DEFINICION OWO
-            INI.Rule = COSAS;
+            INI.Rule = EXPRESION;
 
             COSAS.Rule = program + id + punto_coma + USES + INSTRUCCIONES + CUERPO_PROGRAMA;
 
             USES.Rule = uses + id + punto_coma
                 | uses + id + coma + OTRO_USES
+                | Empty                
                 ;
 
             OTRO_USES.Rule = id + coma + OTRO_USES
@@ -153,15 +179,40 @@ namespace OC2_P1_201800523.AST
 
             INSTRUCCION.Rule = FUNCION_O_PROCEDIMIENTO
                 | var + VARIABLE
+                | rtype + DECLTIPOS
                 | rconst + CONSTANTE
                 ;
 
             VARIABLE.Rule = id + dos_puntos + TIPO + punto_coma + OTRA_DECL_VARIABLE
+                | id + dos_puntos + TIPO + igual + EXPRESION + punto_coma + OTRA_DECL_VARIABLE
+                | id + igual + EXPRESION + punto_coma + OTRA_DECL_VARIABLE
                 | id + coma + VARIABLE
                 ;
 
             OTRA_DECL_VARIABLE.Rule = VARIABLE
                 | Empty
+                ;
+
+            DECLTIPOS.Rule = DECLTIPOS + DECLVARIOST + igual + TIPO + punto_coma
+                | DECLVARIOST + igual + TIPO + punto_coma
+                | id + igual + rarray + abrir_corchete + INDEXADO + cerrar_corchete + rof + TIPO + punto_coma
+                | id + igual + robject + var + DECLARACIONATRIBUTOS + end + punto_coma
+                ;
+
+            DECLARACIONATRIBUTOS.Rule = id + coma + DECLARACIONATRIBUTOS
+                | id + dos_puntos + TIPO + punto_coma + OTRADECLARACIONATRIBUTOS
+                ;
+
+            OTRADECLARACIONATRIBUTOS.Rule = DECLARACIONATRIBUTOS
+                | Empty
+                ;
+
+            INDEXADO.Rule = INDEXADO + coma + EXPRESION + dospunticos + EXPRESION
+                | EXPRESION + dospunticos + EXPRESION
+                ;
+
+            DECLVARIOST.Rule = DECLVARIOST + coma + id
+                | id 
                 ;
 
             CONSTANTE.Rule = id + igual + EXPRESION + punto_coma + OTRA_CONSTANTE
@@ -176,8 +227,26 @@ namespace OC2_P1_201800523.AST
                 ;
 
             FUNCION.Rule = function + id + abrir_parentesis + cerrar_parentesis + dos_puntos + TIPO + punto_coma + OTRA_FUNCION + begin + SENTENCIAS + end + punto_coma
-                //| function + id + abrir_parentesis +PARAMETROS+ cerrar_parentesis + dos_puntos + TIPO + punto_coma + OTRA_FUNCION + begin + SENTENCIAS + end + punto_coma
+                | function + id + abrir_parentesis + VALOR_REFERENCIA + cerrar_parentesis + dos_puntos + TIPO + punto_coma  + OTRA_FUNCION + begin + SENTENCIAS + end + punto_coma
+                | procedure + id + abrir_parentesis + cerrar_parentesis + punto_coma + OTRA_FUNCION + begin + SENTENCIAS + end + punto_coma
+                | procedure + id + abrir_parentesis + VALOR_REFERENCIA + cerrar_parentesis + punto_coma + OTRA_FUNCION + begin + SENTENCIAS + end + punto_coma
+                
                 ;
+
+            VALOR_REFERENCIA.Rule = var + REFERENCIA /*VALORES POR REFERENCIA*/
+                | VALOR /*VALORES POR VALOR*/
+                ;
+
+            VALOR.Rule = id + dos_puntos + TIPO + punto_coma + VALOR_REFERENCIA
+                | id + coma + VALOR
+                | id + dos_puntos + TIPO                
+                ;
+
+            REFERENCIA.Rule = id + dos_puntos + TIPO + punto_coma + VALOR_REFERENCIA
+                | id + coma + REFERENCIA
+                | id + dos_puntos + TIPO
+                ;
+
 
             OTRA_FUNCION.Rule = FUNCION
                 | Empty
@@ -188,7 +257,7 @@ namespace OC2_P1_201800523.AST
                 | Empty
                 ;
 
-            SENTENCIA.Rule = id + dos_puntos_igual + EXPRESION + punto_coma //Asignar con ;
+            SENTENCIA.Rule = id + dos_puntos_igual + EXPRESION + punto_coma
                 | rif + EXPRESION + rthen + begin + SENTENCIAS + end + punto_coma
                 | rif + EXPRESION + rthen + begin + SENTENCIAS + end + PreferShiftHere() + relse + begin + SENTENCIAS + end + punto_coma
                 | rcase + EXPRESION + rof + CASOS + end + punto_coma
@@ -196,21 +265,28 @@ namespace OC2_P1_201800523.AST
                 | rwhile + EXPRESION + rdo + begin + SENTENCIAS + end + punto_coma
                 | rfor + id + dos_puntos_igual + EXPRESION + to + EXPRESION + rdo + begin + SENTENCIAS + end + punto_coma
                 | repeat + begin + SENTENCIAS + end + until + EXPRESION + punto_coma
-                | writeln + abrir_parentesis + EXPRESION + cerrar_parentesis + punto_coma
-
+                | repeat + SENTENCIAS + until + EXPRESION + punto_coma
+                | writeln + punto_coma
+                | write + punto_coma
+                | write + abrir_parentesis + PARAMETROSWRITELN + cerrar_parentesis + punto_coma
+                | writeln + abrir_parentesis+ PARAMETROSWRITELN + cerrar_parentesis + punto_coma
+                | rbreak + punto_coma
+                | rcontinue + punto_coma
                 ;
+
+            SENTENCIA.ErrorRule = punto_coma
+                ;
+
+            PARAMETROSWRITELN.Rule = PARAMETROSWRITELN + coma + EXPRESION
+                | EXPRESION
+                ;
+
             CASOS.Rule = CASOS + CASO
                 | CASO
                 ;
 
             CASO.Rule = EXPRESION + dos_puntos + begin + SENTENCIAS + end + punto_coma
-                ;
-
-           
-
-           
-
-            
+                ;            
 
             EXPRESION.Rule = uminus + EXPRESION + PreferShiftHere()
                 | not + EXPRESION
@@ -218,23 +294,28 @@ namespace OC2_P1_201800523.AST
                 | EXPRESION + div + EXPRESION
                 | EXPRESION + barra_div + EXPRESION
                 | EXPRESION + mod + EXPRESION
-                | EXPRESION + and + EXPRESION
+                | EXPRESION + and + EXPRESION 
                 | EXPRESION + mas + EXPRESION
                 | EXPRESION + menos + EXPRESION
-                | EXPRESION + or + EXPRESION
-                | EXPRESION + igual + EXPRESION
+                | EXPRESION + or + EXPRESION 
+                | EXPRESION + igual + EXPRESION 
                 | EXPRESION + distinto + EXPRESION
-                | EXPRESION + menor + EXPRESION
-                | EXPRESION + menor_igual + EXPRESION
-                | EXPRESION + mayor +EXPRESION
-                | EXPRESION + mayor_igual + EXPRESION
-                | EXPRESION + rin + EXPRESION 
-                | numero
-                | cadena
+                | EXPRESION + menor + EXPRESION 
+                | EXPRESION + menor_igual + EXPRESION 
+                | EXPRESION + mayor +EXPRESION 
+                | EXPRESION + mayor_igual + EXPRESION 
                 | id
+                | id + PreferShiftHere() +abrir_parentesis + PARAMETROS + cerrar_parentesis
+                | numero
+                | cadena                
                 | rtrue
                 | rfalse
-                | abrir_parentesis + EXPRESION + cerrar_parentesis
+                | abrir_parentesis + EXPRESION + cerrar_parentesis                
+                ;
+           
+
+            PARAMETROS.Rule = PARAMETROS + coma + id
+                | PARAMETROS
                 ;
 
             TIPO.Rule = rstring

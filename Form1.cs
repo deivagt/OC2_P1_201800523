@@ -31,5 +31,10 @@ namespace OC2_P1_201800523
             n.analisis(richTextBox1.Text);
             
         }
+
+        private void richTextBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
