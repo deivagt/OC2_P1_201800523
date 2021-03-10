@@ -16,11 +16,22 @@ namespace OC2_P1_201800523.AST
             ParseTree arbol = parser.Parse(entrada);
             try
             {
-                ParseTreeNode raiz = arbol.Root;
-                recorrer(raiz);
-                manejadorArbol.iniciar(raiz);
-                manejadorArbol.ejecutar();
-                imprimirTabla();
+                if(arbol.Root != null)
+                {
+                    ParseTreeNode raiz = arbol.Root;
+                    recorrer(raiz);
+                    manejadorArbol.iniciar(raiz);
+                    manejadorArbol.ejecutar();
+                    imprimirTabla();
+                }
+                else
+                {
+                    foreach(var a in arbol.ParserMessages)
+                    {
+                        System.Diagnostics.Debug.WriteLine(a.Message + " " + a.Location.Line+1 + " " + a.Location.Column+1);
+                    }
+                }
+               
                 
             } catch(Exception e)
             {

@@ -8,16 +8,8 @@ namespace OC2_P1_201800523.AST
 {
     class Gramatica : Grammar
     {
-        public Gramatica() : base(caseSensitive: false)
-        {
-
-            /*
-             NOTAS:
-                Pendiente entender Object
-             
-             
-             */
-
+        public Gramatica() : base(caseSensitive: false )
+        {         
             #region Declaracion de Terminales
             IdentifierTerminal id = new IdentifierTerminal(terminales.id);
             NumberLiteral numero = new NumberLiteral(terminales.numero,NumberOptions.AllowSign);
@@ -159,9 +151,11 @@ namespace OC2_P1_201800523.AST
             #endregion
 
             #region DEFINICION OWO
-            INI.Rule = DECLTIPOS;
+            INI.Rule = COSAS
+                ;
 
-            COSAS.Rule = program + id + punto_coma + USES + INSTRUCCIONES + CUERPO_PROGRAMA;
+            COSAS.Rule = program + id + punto_coma + USES + INSTRUCCIONES + CUERPO_PROGRAMA
+                ;
 
             USES.Rule = uses + id + punto_coma
                 | uses + id + coma + OTRO_USES
@@ -174,7 +168,6 @@ namespace OC2_P1_201800523.AST
 
             INSTRUCCIONES.Rule = INSTRUCCIONES + INSTRUCCION
                 | INSTRUCCION
-
                 ;
 
             INSTRUCCION.Rule = FUNCION_O_PROCEDIMIENTO
@@ -187,10 +180,11 @@ namespace OC2_P1_201800523.AST
                 | Empty
                 ;
 
+            CONSTANTE.ErrorRule = SyntaxError + punto_coma;
+
             VARIABLE.Rule = id + dos_puntos + TIPO + igual + EXPRESION + punto_coma + VARIABLE //a:int=5; LISTA SIMPLE ENLAZADA
                 | id + dos_puntos + TIPO + punto_coma + VARIABLE//a:int
-                | OTRA_DECL_VARIABLE + dos_puntos + TIPO + punto_coma + VARIABLE //a,b,c:int
-                
+                | OTRA_DECL_VARIABLE + dos_puntos + TIPO + punto_coma + VARIABLE //a,b,c:int               
                 | Empty
                 ;
 
@@ -201,33 +195,30 @@ namespace OC2_P1_201800523.AST
             DECLTIPOS.Rule =
                  DECLVARIOST + igual + TIPO + punto_coma + DECLTIPOS
                 | id + igual + TIPO + punto_coma + DECLTIPOS
-                | id + igual + robject + var + DECLARACIONATRIBUTOS + end + punto_coma + DECLTIPOS
+                | id + igual + robject + var + DECLARACIONATRIBUTOS + end + punto_coma
                 | id + igual + rarray + abrir_corchete + INDEXADO + cerrar_corchete + rof + TIPO + punto_coma + DECLTIPOS                     
                 | Empty
+                ;
+
+            DECLTIPOS.ErrorRule = SyntaxError + punto_coma
                 ;
 
             DECLVARIOST.Rule = DECLVARIOST + coma + id
                 | id
                 ;
 
-            DECLARACIONATRIBUTOS.Rule = id + coma + DECLARACIONATRIBUTOS
-                | id + dos_puntos + TIPO + punto_coma + OTRADECLARACIONATRIBUTOS
+            DECLARACIONATRIBUTOS.Rule = id + dos_puntos + TIPO + punto_coma + DECLARACIONATRIBUTOS
+                | OTRADECLARACIONATRIBUTOS + dos_puntos + TIPO + punto_coma + DECLARACIONATRIBUTOS
+                | Empty                 
                 ;
 
-            OTRADECLARACIONATRIBUTOS.Rule = DECLARACIONATRIBUTOS
-                | Empty
+            OTRADECLARACIONATRIBUTOS.Rule = OTRADECLARACIONATRIBUTOS +coma + id
+                | id
                 ;
-
 
             INDEXADO.Rule = INDEXADO + coma + EXPRESION + dospunticos + EXPRESION
                 | EXPRESION + dospunticos + EXPRESION
                 ;
-
-            
-
-            
-
-           
 
             FUNCION_O_PROCEDIMIENTO.Rule = FUNCION
                 ;
@@ -280,7 +271,7 @@ namespace OC2_P1_201800523.AST
                 | rcontinue + punto_coma
                 ;
 
-            SENTENCIA.ErrorRule = punto_coma
+            SENTENCIA.ErrorRule = SyntaxError+ punto_coma
                 ;
 
             PARAMETROSWRITELN.Rule = PARAMETROSWRITELN + coma + EXPRESION
@@ -311,7 +302,7 @@ namespace OC2_P1_201800523.AST
                 | EXPRESION + mayor +EXPRESION 
                 | EXPRESION + mayor_igual + EXPRESION 
                 | id
-                | id + PreferShiftHere() +abrir_parentesis + PARAMETROS + cerrar_parentesis
+                | id + PreferShiftHere() +abrir_parentesis + PARAMETROS + cerrar_parentesis//
                 | numero
                 | cadena                
                 | rtrue
@@ -351,7 +342,7 @@ namespace OC2_P1_201800523.AST
             this.RegisterOperators(3, Associativity.Left,terminales.por, terminales.barra_div, terminales.div, terminales.mod, terminales.and);
             this.RegisterOperators(2, Associativity.Left,terminales.mas, terminales.menos, terminales.or);
             this.RegisterOperators(1, Associativity.Left,terminales.distinto, terminales.menor, terminales.menor_igual, terminales.mayor, terminales.mayor_igual, terminales.rin);
-
+            AddToNoReportGroup(punto_coma);
         }
     }
 }
