@@ -159,7 +159,7 @@ namespace OC2_P1_201800523.AST
             #endregion
 
             #region DEFINICION OWO
-            INI.Rule = EXPRESION;
+            INI.Rule = DECLTIPOS;
 
             COSAS.Rule = program + id + punto_coma + USES + INSTRUCCIONES + CUERPO_PROGRAMA;
 
@@ -183,20 +183,31 @@ namespace OC2_P1_201800523.AST
                 | rconst + CONSTANTE
                 ;
 
-            VARIABLE.Rule = id + dos_puntos + TIPO + punto_coma + OTRA_DECL_VARIABLE
-                | id + dos_puntos + TIPO + igual + EXPRESION + punto_coma + OTRA_DECL_VARIABLE
-                | id + igual + EXPRESION + punto_coma + OTRA_DECL_VARIABLE
-                | id + coma + VARIABLE
-                ;
-
-            OTRA_DECL_VARIABLE.Rule = VARIABLE
+            CONSTANTE.Rule = id + igual + EXPRESION + punto_coma + CONSTANTE
                 | Empty
                 ;
 
-            DECLTIPOS.Rule = DECLTIPOS + DECLVARIOST + igual + TIPO + punto_coma
-                | DECLVARIOST + igual + TIPO + punto_coma
-                | id + igual + rarray + abrir_corchete + INDEXADO + cerrar_corchete + rof + TIPO + punto_coma
-                | id + igual + robject + var + DECLARACIONATRIBUTOS + end + punto_coma
+            VARIABLE.Rule = id + dos_puntos + TIPO + igual + EXPRESION + punto_coma + VARIABLE //a:int=5; LISTA SIMPLE ENLAZADA
+                | id + dos_puntos + TIPO + punto_coma + VARIABLE//a:int
+                | OTRA_DECL_VARIABLE + dos_puntos + TIPO + punto_coma + VARIABLE //a,b,c:int
+                
+                | Empty
+                ;
+
+            OTRA_DECL_VARIABLE.Rule = OTRA_DECL_VARIABLE + coma + id
+                | id
+                ;
+
+            DECLTIPOS.Rule =
+                 DECLVARIOST + igual + TIPO + punto_coma + DECLTIPOS
+                | id + igual + TIPO + punto_coma + DECLTIPOS
+                | id + igual + robject + var + DECLARACIONATRIBUTOS + end + punto_coma + DECLTIPOS
+                | id + igual + rarray + abrir_corchete + INDEXADO + cerrar_corchete + rof + TIPO + punto_coma + DECLTIPOS                     
+                | Empty
+                ;
+
+            DECLVARIOST.Rule = DECLVARIOST + coma + id
+                | id
                 ;
 
             DECLARACIONATRIBUTOS.Rule = id + coma + DECLARACIONATRIBUTOS
@@ -207,21 +218,16 @@ namespace OC2_P1_201800523.AST
                 | Empty
                 ;
 
+
             INDEXADO.Rule = INDEXADO + coma + EXPRESION + dospunticos + EXPRESION
                 | EXPRESION + dospunticos + EXPRESION
                 ;
 
-            DECLVARIOST.Rule = DECLVARIOST + coma + id
-                | id 
-                ;
+            
 
-            CONSTANTE.Rule = id + igual + EXPRESION + punto_coma + OTRA_CONSTANTE
-                | id + dos_puntos + TIPO + igual + EXPRESION + punto_coma + OTRA_CONSTANTE
-                ;
+            
 
-            OTRA_CONSTANTE.Rule = CONSTANTE
-                | Empty
-                ;
+           
 
             FUNCION_O_PROCEDIMIENTO.Rule = FUNCION
                 ;
@@ -311,8 +317,7 @@ namespace OC2_P1_201800523.AST
                 | rtrue
                 | rfalse
                 | abrir_parentesis + EXPRESION + cerrar_parentesis                
-                ;
-           
+                ;           
 
             PARAMETROS.Rule = PARAMETROS + coma + id
                 | PARAMETROS

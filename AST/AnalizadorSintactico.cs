@@ -17,10 +17,11 @@ namespace OC2_P1_201800523.AST
             try
             {
                 ParseTreeNode raiz = arbol.Root;
+                recorrer(raiz);
                 manejadorArbol.iniciar(raiz);
                 manejadorArbol.ejecutar();
-                System.Diagnostics.Debug.WriteLine(raiz.Term);
-                recorrer(raiz);
+                imprimirTabla();
+                
             } catch(Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e);
@@ -34,6 +35,14 @@ namespace OC2_P1_201800523.AST
             {
                 System.Diagnostics.Debug.WriteLine(hijo.Term);
                 recorrer(hijo);
+            }
+        }
+
+        void imprimirTabla()
+        {
+            foreach(var simbolo in manejadorArbol.tabladeSimbolos.getTabla())
+            {
+                System.Diagnostics.Debug.WriteLine(simbolo.categoria + " " +simbolo.ambito + " " + simbolo.id + " " + simbolo.tipo + " " + simbolo.valor + " " + simbolo.fila + " " + simbolo.columna);
             }
         }
     }
