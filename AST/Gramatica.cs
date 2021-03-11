@@ -142,6 +142,8 @@ namespace OC2_P1_201800523.AST
             NonTerminal DECLARACIONATRIBUTOS = new NonTerminal(noterminales.DECLARACIONATRIBUTOS);
             NonTerminal OTRADECLARACIONATRIBUTOS = new NonTerminal(noterminales.OTRADECLARACIONATRIBUTOS);
 
+            NonTerminal ELSEIF = new NonTerminal(noterminales.ELSEIF);
+
 
             //Control
 
@@ -156,6 +158,13 @@ namespace OC2_P1_201800523.AST
 
             COSAS.Rule = program + id + punto_coma + USES + INSTRUCCIONES + CUERPO_PROGRAMA
                 ;
+            COSAS.ErrorRule = SyntaxError + Eof;
+
+            CUERPO_PROGRAMA.Rule = begin + SENTENCIAS + end + punto
+                ;
+
+            CUERPO_PROGRAMA.ErrorRule = SyntaxError + Eof
+                ;
 
             USES.Rule = uses + id + punto_coma
                 | uses + id + coma + OTRO_USES
@@ -168,6 +177,7 @@ namespace OC2_P1_201800523.AST
 
             INSTRUCCIONES.Rule = INSTRUCCIONES + INSTRUCCION
                 | INSTRUCCION
+                | Empty
                 ;
 
             INSTRUCCION.Rule = FUNCION_O_PROCEDIMIENTO
@@ -196,7 +206,7 @@ namespace OC2_P1_201800523.AST
                  DECLVARIOST + igual + TIPO + punto_coma + DECLTIPOS
                 | id + igual + TIPO + punto_coma + DECLTIPOS
                 | id + igual + robject + var + DECLARACIONATRIBUTOS + end + punto_coma
-                | id + igual + rarray + abrir_corchete + INDEXADO + cerrar_corchete + rof + TIPO + punto_coma + DECLTIPOS                     
+                | id + igual + rarray + abrir_corchete + INDEXADO + cerrar_corchete + rof + TIPO + punto_coma + DECLTIPOS  //                   
                 | Empty
                 ;
 
@@ -256,7 +266,7 @@ namespace OC2_P1_201800523.AST
 
             SENTENCIA.Rule = id + dos_puntos_igual + EXPRESION + punto_coma
                 | rif + EXPRESION + rthen + begin + SENTENCIAS + end + punto_coma
-                | rif + EXPRESION + rthen + begin + SENTENCIAS + end + PreferShiftHere() + relse + begin + SENTENCIAS + end + punto_coma
+                | rif + EXPRESION + rthen + begin + SENTENCIAS + end + PreferShiftHere() + ELSEIF + punto_coma
                 | rcase + EXPRESION + rof + CASOS + end + punto_coma
                 | rcase + EXPRESION + rof + CASOS + end + PreferShiftHere() + relse + begin + SENTENCIAS + end + punto_coma
                 | rwhile + EXPRESION + rdo + begin + SENTENCIAS + end + punto_coma
@@ -269,6 +279,11 @@ namespace OC2_P1_201800523.AST
                 | writeln + abrir_parentesis+ PARAMETROSWRITELN + cerrar_parentesis + punto_coma
                 | rbreak + punto_coma
                 | rcontinue + punto_coma
+                ;
+
+            ELSEIF.Rule = relse + rif + EXPRESION + rthen + begin + SENTENCIAS + end  + ELSEIF
+                | relse + begin + SENTENCIAS + end
+                | Empty
                 ;
 
             SENTENCIA.ErrorRule = SyntaxError+ punto_coma
@@ -331,8 +346,7 @@ namespace OC2_P1_201800523.AST
                 | id
                 ;
 
-            CUERPO_PROGRAMA.Rule = begin +SENTENCIAS+ end + punto
-                ;
+            
             #endregion
 
             this.Root = INI;
@@ -341,7 +355,7 @@ namespace OC2_P1_201800523.AST
             this.RegisterOperators(4, Associativity.Left, terminales.not);
             this.RegisterOperators(3, Associativity.Left,terminales.por, terminales.barra_div, terminales.div, terminales.mod, terminales.and);
             this.RegisterOperators(2, Associativity.Left,terminales.mas, terminales.menos, terminales.or);
-            this.RegisterOperators(1, Associativity.Left,terminales.distinto, terminales.menor, terminales.menor_igual, terminales.mayor, terminales.mayor_igual, terminales.rin);
+            this.RegisterOperators(1, Associativity.Left,terminales.distinto, terminales.menor, terminales.menor_igual, terminales.mayor, terminales.mayor_igual, terminales.rin, terminales.igual);
             AddToNoReportGroup(punto_coma);
         }
     }

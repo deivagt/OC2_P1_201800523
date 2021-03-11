@@ -10,6 +10,7 @@ namespace OC2_P1_201800523.AST
     {
         public void analisis(string entrada)
         {
+            
             Gramatica gram = new Gramatica();
             LanguageData leng = new LanguageData(gram);
             Parser parser = new Parser(leng);
