@@ -29,8 +29,7 @@ namespace OC2_P1_201800523
             //System.Diagnostics.Debug.WriteLine(richTextBox1.Text);
             this.richTextBox2.Text = "";
             AnalizadorSintactico n = new AnalizadorSintactico();
-            n.analisis(richTextBox1.Text);
-            
+            n.analisis(richTextBox1.Text);            
         }
 
         private void richTextBox2_TextChanged(object sender, EventArgs e)

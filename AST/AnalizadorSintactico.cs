@@ -23,7 +23,7 @@ namespace OC2_P1_201800523.AST
                     recorrer(raiz);
                     manejadorArbol.iniciar(raiz);
                     manejadorArbol.ejecutar();
-                    imprimirTabla();
+                    //manejadorArbol.imprimirTabla();
                 }
                 else
                 {
@@ -50,12 +50,6 @@ namespace OC2_P1_201800523.AST
             }
         }
 
-        void imprimirTabla()
-        {
-            foreach(var simbolo in manejadorArbol.tabladeSimbolos.getTabla())
-            {
-                System.Diagnostics.Debug.WriteLine(simbolo.categoria + " " +simbolo.ambito + " " + simbolo.id + " " + simbolo.tipo + " " + simbolo.valor + " " + simbolo.fila + " " + simbolo.columna);
-            }
-        }
+        
     }
 }

@@ -186,7 +186,7 @@ namespace OC2_P1_201800523.AST
                 | rconst + CONSTANTE
                 ;
 
-            CONSTANTE.Rule = id + igual + EXPRESION + punto_coma + CONSTANTE
+            CONSTANTE.Rule = id +dos_puntos + TIPO  + igual + EXPRESION + punto_coma + CONSTANTE
                 | Empty
                 ;
 
@@ -265,10 +265,11 @@ namespace OC2_P1_201800523.AST
                 ;
 
             SENTENCIA.Rule = id + dos_puntos_igual + EXPRESION + punto_coma
+                | id + abrir_parentesis + cerrar_parentesis + punto_coma //PROCEDIMIENTOLLAMADA
                 | rif + EXPRESION + rthen + begin + SENTENCIAS + end + punto_coma
                 | rif + EXPRESION + rthen + begin + SENTENCIAS + end + PreferShiftHere() + ELSEIF + punto_coma
                 | rcase + EXPRESION + rof + CASOS + end + punto_coma
-                | rcase + EXPRESION + rof + CASOS + end + PreferShiftHere() + relse + begin + SENTENCIAS + end + punto_coma
+                | rcase + EXPRESION + rof + CASOS +  PreferShiftHere() + relse + begin + SENTENCIAS + end + punto_coma + end + punto_coma
                 | rwhile + EXPRESION + rdo + begin + SENTENCIAS + end + punto_coma
                 | rfor + id + dos_puntos_igual + EXPRESION + to + EXPRESION + rdo + begin + SENTENCIAS + end + punto_coma
                 | repeat + begin + SENTENCIAS + end + until + EXPRESION + punto_coma
@@ -279,6 +280,7 @@ namespace OC2_P1_201800523.AST
                 | writeln + abrir_parentesis+ PARAMETROSWRITELN + cerrar_parentesis + punto_coma
                 | rbreak + punto_coma
                 | rcontinue + punto_coma
+                //| exit + abrir_parentesis + PARAMETROS + cerrar_parentesis
                 ;
 
             ELSEIF.Rule = relse + rif + EXPRESION + rthen + begin + SENTENCIAS + end  + ELSEIF
@@ -325,8 +327,8 @@ namespace OC2_P1_201800523.AST
                 | abrir_parentesis + EXPRESION + cerrar_parentesis                
                 ;           
 
-            PARAMETROS.Rule = PARAMETROS + coma + id
-                | PARAMETROS
+            PARAMETROS.Rule = PARAMETROS + coma + EXPRESION
+                | EXPRESION
                 ;
 
             TIPO.Rule = rstring
@@ -346,16 +348,15 @@ namespace OC2_P1_201800523.AST
                 | id
                 ;
 
-            
-            #endregion
-
+           
+            #endregion            
             this.Root = INI;
-
             this.RegisterOperators(5, Associativity.Left, terminales.uminus);
             this.RegisterOperators(4, Associativity.Left, terminales.not);
             this.RegisterOperators(3, Associativity.Left,terminales.por, terminales.barra_div, terminales.div, terminales.mod, terminales.and);
             this.RegisterOperators(2, Associativity.Left,terminales.mas, terminales.menos, terminales.or);
-            this.RegisterOperators(1, Associativity.Left,terminales.distinto, terminales.menor, terminales.menor_igual, terminales.mayor, terminales.mayor_igual, terminales.rin, terminales.igual);
+            this.RegisterOperators(1, Associativity.Left,terminales.distinto, terminales.menor, terminales.menor_igual,
+                terminales.mayor, terminales.mayor_igual, terminales.rin, terminales.igual);
             AddToNoReportGroup(punto_coma);
         }
     }
