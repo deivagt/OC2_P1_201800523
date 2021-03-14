@@ -23,7 +23,7 @@ namespace OC2_P1_201800523.AST
                     recorrer(raiz);
                     manejadorArbol.iniciar(raiz);
                     manejadorArbol.ejecutar();
-                    //manejadorArbol.imprimirTabla();
+                    manejadorArbol.imprimirTabla();
                 }
                 else
                 {
