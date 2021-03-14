@@ -287,7 +287,7 @@ namespace OC2_P1_201800523.AST
                 | writeln + abrir_parentesis+ PARAMETROSWRITELN + cerrar_parentesis + punto_coma
                 | rbreak + punto_coma
                 | rcontinue + punto_coma
-                | exit + abrir_parentesis + EXPRESION + cerrar_parentesis
+                | exit + abrir_parentesis + EXPRESION + cerrar_parentesis + punto_coma
                 ;
 
             ELSEIF.Rule = relse + rif + EXPRESION + rthen + begin + SENTENCIAS + end  + ELSEIF
