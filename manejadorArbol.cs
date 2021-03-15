@@ -10,29 +10,32 @@ using OC2_P1_201800523.Arbol;
 using OC2_P1_201800523.tablaSimbolos;
 namespace OC2_P1_201800523
 {
-   
-        class manejadorArbol
-        {
+
+    class manejadorArbol
+    {
         public static bool controlBreak = false;
         public static bool controlContinue = false;
-        //public static bool controlExit = false;
+        public static bool controlExit = false;
         public static string ambitoActual;
         static ParseTreeNode raiz;
         public static tabla tabladeSimbolos;
-            public static void iniciar(ParseTreeNode nuevaRaiz)
-            {
-                
-                manejadorArbol.raiz = nuevaRaiz;
-                tabladeSimbolos = new tabla();
-                ambitoActual = "global";          
-           
-            }
 
-            public static void ejecutar()
-            {
-                ini a = new ini(noterminales.INI, manejadorArbol.raiz);
-                resultado salida = a.Ejecutar();
-            }
+        public static int contadorNodos = 0;
+
+        public static void iniciar(ParseTreeNode nuevaRaiz)
+        {
+
+            manejadorArbol.raiz = nuevaRaiz;
+            tabladeSimbolos = new tabla();
+            ambitoActual = "global";
+
+        }
+
+        public static void ejecutar()
+        {
+            ini a = new ini(noterminales.INI, manejadorArbol.raiz);
+            resultado salida = a.Ejecutar();
+        }
 
         public static void imprimirTabla()
         {
@@ -42,6 +45,8 @@ namespace OC2_P1_201800523
             }
         }
 
+
+
     }
-    
+
 }

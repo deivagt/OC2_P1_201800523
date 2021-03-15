@@ -327,7 +327,6 @@ namespace OC2_P1_201800523.AST
                 | EXPRESION + mayor_igual + EXPRESION 
                 | id                
                 | id + PreferShiftHere() +abrir_parentesis  + cerrar_parentesis//
-                | id + PreferShiftHere() +abrir_parentesis + PARAMETROS + cerrar_parentesis//
                 | numero
                 | cadena                
                 | rtrue

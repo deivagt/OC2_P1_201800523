@@ -224,7 +224,7 @@ namespace OC2_P1_201800523.Arbol.Ejecucion.sentencias
                         return new resultado();
 
                     case "Exit":
-                       // manejadorArbol.controlExit = true;
+                        manejadorArbol.controlExit = true;
 
                         simbolo fn1 = manejadorArbol.tabladeSimbolos.buscarFuncion(manejadorArbol.ambitoActual);
                         if (fn1 != null)
@@ -437,5 +437,7 @@ namespace OC2_P1_201800523.Arbol.Ejecucion.sentencias
         }
 
         
+
+
     }
 }

@@ -6,6 +6,7 @@ using Irony.Parsing;
 
 using OC2_P1_201800523.AST;
 using OC2_P1_201800523.tablaSimbolos;
+using OC2_P1_201800523.Arbol.Ejecucion.sentencias;
 
 namespace OC2_P1_201800523.Arbol.Ejecucion.Expresion
 {
@@ -87,7 +88,7 @@ namespace OC2_P1_201800523.Arbol.Ejecucion.Expresion
                     return res;
                 }
             }
-            else if (node.ChildNodes.Count == 3)
+            else if (node.ChildNodes.Count == 3 && (node.ChildNodes.ElementAt(0).Term.ToString() == "EXPRESION" || node.ChildNodes.ElementAt(0).Term.ToString() == "("))
             {
                
                 if (node.ChildNodes.ElementAt(0).Term.ToString() != "EXPRESION") /*CASO DEL PARENTESIS*/
@@ -214,10 +215,43 @@ namespace OC2_P1_201800523.Arbol.Ejecucion.Expresion
             }
             else
             {
-                //FALTA LA LLAMADA A FUNCIONES
+                simbolo s = manejadorArbol.tabladeSimbolos.buscarFuncion(node.ChildNodes.ElementAt(0).Token.Text);
+                if(s != null)
+                {
+                    manejadorArbol.ambitoActual = s.id;
+                    Funcion_Procedimiento.objetoFuncion of = s.fn;
+                    hacerEjecucion(of.lstSent);
+                    if(manejadorArbol.controlExit == true)
+                    {
+                        manejadorArbol.controlExit = false;
+                    }
+
+                    manejadorArbol.ambitoActual = "global";
+
+                    return new resultado(s.tipo, s.valor);
+                }
+
+
             }
 
                 return new resultado();
         }
+
+        void hacerEjecucion(ParseTreeNode lstSent)
+        {
+            if (lstSent.ChildNodes.Count != 0)
+            {
+                LinkedList<sentencia> listaSentencias = new LinkedList<sentencia>();
+                sentencias.sentencias sentencias = new sentencias.sentencias(noterminales.SENTENCIAS, lstSent);
+                sentencias.nuevaEjecucion(listaSentencias);
+
+                foreach (var sentencia in listaSentencias)
+                {
+                    sentencia.Ejecutar();
+                }
+
+            }
+        } 
+
     }
 }

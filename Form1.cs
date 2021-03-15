@@ -14,6 +14,7 @@ namespace OC2_P1_201800523
 {
     public partial class Form1 : Form
     {
+        AnalizadorSintactico n;
         public Form1()
         {
             InitializeComponent();
@@ -28,13 +29,20 @@ namespace OC2_P1_201800523
         {
             //System.Diagnostics.Debug.WriteLine(richTextBox1.Text);
             this.richTextBox2.Text = "";
-            AnalizadorSintactico n = new AnalizadorSintactico();
+            n = new AnalizadorSintactico();
             n.analisis(richTextBox1.Text);            
         }
 
         private void richTextBox2_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            
+            string tree = n.graficar(n.raiz);
+            richTextBox2.Text = tree;
         }
     }
 }

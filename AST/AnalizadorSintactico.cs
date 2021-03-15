@@ -8,6 +8,8 @@ namespace OC2_P1_201800523.AST
 {
     class AnalizadorSintactico :Grammar
     {
+
+        public ParseTreeNode raiz;
         public void analisis(string entrada)
         {
             
@@ -19,7 +21,7 @@ namespace OC2_P1_201800523.AST
             {
                 if(arbol.Root != null)
                 {
-                    ParseTreeNode raiz = arbol.Root;
+                    raiz = arbol.Root;
                     recorrer(raiz);
                     manejadorArbol.iniciar(raiz);
                     manejadorArbol.ejecutar();
@@ -50,6 +52,46 @@ namespace OC2_P1_201800523.AST
             }
         }
 
-        
+
+        public string graficar(ParseTreeNode padre)
+        {
+            string salida = "dot {";
+
+            salida += "nodo" + manejadorArbol.contadorNodos + "[label=\"" + padre.Term.Name + "\"];\n";
+            manejadorArbol.contadorNodos++;
+            foreach (var hijo in padre.ChildNodes)
+            {
+
+                string nuevoNodo = "nodo"+ manejadorArbol.contadorNodos+ "[label=\"" +hijo.Term.Name + "\"];\n";
+                string puntero = "nodo" + manejadorArbol.contadorNodos + "->" + "nodo" + (manejadorArbol.contadorNodos - 1);
+                manejadorArbol.contadorNodos++;
+                salida += nuevoNodo + puntero + "\n" ;
+                AnalizadorSintactico n = new AnalizadorSintactico();
+                salida += n.gr(hijo, salida);
+
+            }
+
+            return salida += "}";
+
+        }
+        string gr(ParseTreeNode padre, string cadenaActual)
+        {
+            cadenaActual += "nodo" + manejadorArbol.contadorNodos + "[label=\"" + padre.Term.Name + "\"];\n";
+            manejadorArbol.contadorNodos++;
+            foreach (var hijo in padre.ChildNodes)
+            {
+
+                string nuevoNodo = "nodo" + manejadorArbol.contadorNodos + "[label=\"" + hijo.Term.Name + "\"];\n";
+                string puntero = "nodo" + manejadorArbol.contadorNodos + "->" + "nodo" + (manejadorArbol.contadorNodos - 1);
+                manejadorArbol.contadorNodos++;
+                cadenaActual += nuevoNodo + puntero;
+                AnalizadorSintactico n = new AnalizadorSintactico();
+                cadenaActual += n.gr(hijo, cadenaActual);
+
+            }
+
+            return cadenaActual;
+        }
+
     }
 }
