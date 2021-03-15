@@ -75,24 +75,24 @@ namespace OC2_P1_201800523.Arbol.Ejecucion.sentencias
                         expresion ex = new expresion(noterminales.EXPRESION, node.ChildNodes.ElementAt(1));
                         res = ex.Ejecutar();
 
-                        LinkedList <casos> listaCasos = new LinkedList<casos>();
+                        LinkedList<casos> listaCasos = new LinkedList<casos>();
                         Case cas = new Case(noterminales.CASOS, node.ChildNodes.ElementAt(3));
                         cas.nuevaEjecucion(listaCasos);
-                        foreach(var caso in listaCasos)
+                        foreach (var caso in listaCasos)
                         {
                             expresion cond = new expresion(noterminales.EXPRESION, caso.expr);
                             resultado comparacionActual = cond.Ejecutar();
-                            if(res.tipo == comparacionActual.tipo)
+                            if (res.tipo == comparacionActual.tipo)
                             {
-                                if(res.valor == comparacionActual.valor)
+                                if (res.valor == comparacionActual.valor)
                                 {
                                     hacerEjecucion(caso.sentencia);
                                     return new resultado();
                                 }
                             }
-                        }                        
+                        }
 
-                        if(node.ChildNodes.Count != 6)//con else
+                        if (node.ChildNodes.Count != 6)//con else
                         {
                             hacerEjecucion(node.ChildNodes.ElementAt(6));
                         }
@@ -119,8 +119,8 @@ namespace OC2_P1_201800523.Arbol.Ejecucion.sentencias
                                     break;
                                 }
                                 //Manejo de break
-                                if(manejadorArbol.controlBreak == true)
-                                {                                    
+                                if (manejadorArbol.controlBreak == true)
+                                {
                                     manejadorArbol.controlBreak = false;
                                     break;
                                 }
@@ -140,11 +140,11 @@ namespace OC2_P1_201800523.Arbol.Ejecucion.sentencias
 
 
                     case "repeat":
-                        if(node.ChildNodes.Count == 5)
+                        if (node.ChildNodes.Count == 5)
                         {
                             ParseTreeNode sen = node.ChildNodes.ElementAt(1);
                             expresion cond = new expresion(noterminales.EXPRESION, node.ChildNodes.ElementAt(3));
-                            
+
 
                             res = cond.Ejecutar();
                             if (res.valor == "true" || res.valor == "false")
@@ -183,7 +183,7 @@ namespace OC2_P1_201800523.Arbol.Ejecucion.sentencias
                         {
                             ParseTreeNode sen = node.ChildNodes.ElementAt(2);
                             expresion cond = new expresion(noterminales.EXPRESION, node.ChildNodes.ElementAt(5));
-                            
+
 
                             res = cond.Ejecutar();
                             if (res.valor == "true" || res.valor == "false")
@@ -217,7 +217,7 @@ namespace OC2_P1_201800523.Arbol.Ejecucion.sentencias
                             {
                                 System.Diagnostics.Debug.WriteLine("ERROR");
                             }
-                        }                     
+                        }
                         return new resultado();
                     case "break":
                         manejadorArbol.controlBreak = true;
@@ -232,8 +232,11 @@ namespace OC2_P1_201800523.Arbol.Ejecucion.sentencias
                             expresion exprs = new expresion(noterminales.EXPRESION, node.ChildNodes.ElementAt(2));
                             resultado rt = exprs.Ejecutar();
                             fn1.valor = rt.valor;
-                            
+
                         }
+                        return new resultado();
+                case "graficar_ts":
+                        manejadorArbol.imprimirTabla();
                         return new resultado();
                     case "for":
                         #region Asignar variable

@@ -48,6 +48,7 @@ namespace OC2_P1_201800523.AST
             comentarioMLTipo2 = "comentarioMLTipo2",
             robject= "object",
             exit = "Exit",
+            graficar_ts = "graficar_ts",
 
             /***************/
             rstring = "string",

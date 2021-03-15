@@ -48,6 +48,7 @@ namespace OC2_P1_201800523.AST
             var robject = ToTerm(terminales.robject);
             var write = ToTerm(terminales.write);
             var exit = ToTerm(terminales.exit);
+            var graficar_ts = ToTerm(terminales.graficar_ts);
 
             var comentarioUL = new CommentTerminal(terminales.comentarioUL, "//", new[] { "\n" });
             var comentarioMLTipo1 = new CommentTerminal(terminales.comentarioMLTipo1, "(*", new[] { "*)" });
@@ -178,6 +179,7 @@ namespace OC2_P1_201800523.AST
 
             INSTRUCCIONES.Rule = INSTRUCCIONES + INSTRUCCION
                 | INSTRUCCION
+                | Empty
                 ;
 
             INSTRUCCION.Rule = FUNCION
@@ -185,6 +187,8 @@ namespace OC2_P1_201800523.AST
                 | rtype + DECLTIPOS
                 | rconst + CONSTANTE
                 ;
+
+            INSTRUCCION.ErrorRule = SyntaxError + punto_coma;
 
             CONSTANTE.Rule = id +dos_puntos + TIPO  + igual + EXPRESION + punto_coma + CONSTANTE
                 | Empty
@@ -267,7 +271,6 @@ namespace OC2_P1_201800523.AST
 
             SENTENCIAS.Rule = SENTENCIAS + SENTENCIA
                 | SENTENCIA
-                | Empty
                 ;
 
             SENTENCIA.Rule = id + dos_puntos_igual + EXPRESION + punto_coma
@@ -288,6 +291,7 @@ namespace OC2_P1_201800523.AST
                 | rbreak + punto_coma
                 | rcontinue + punto_coma
                 | exit + abrir_parentesis + EXPRESION + cerrar_parentesis + punto_coma
+                | graficar_ts + abrir_parentesis+ cerrar_parentesis + punto_coma
                 ;
 
             ELSEIF.Rule = relse + rif + EXPRESION + rthen + begin + SENTENCIAS + end  + ELSEIF

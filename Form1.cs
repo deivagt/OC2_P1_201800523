@@ -30,7 +30,8 @@ namespace OC2_P1_201800523
             //System.Diagnostics.Debug.WriteLine(richTextBox1.Text);
             this.richTextBox2.Text = "";
             n = new AnalizadorSintactico();
-            n.analisis(richTextBox1.Text);            
+            n.analisis(richTextBox1.Text);
+            
         }
 
         private void richTextBox2_TextChanged(object sender, EventArgs e)
@@ -40,9 +41,43 @@ namespace OC2_P1_201800523
 
         private void button2_Click(object sender, EventArgs e)
         {
+            manejadorArbol.imprimirTabla();
             
-            string tree = n.graficar(n.raiz);
-            richTextBox2.Text = tree;
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog abrirArchivo = new OpenFileDialog
+            {
+                InitialDirectory = @"C:\",
+                Title = "Abrir archivo pascal",
+
+                CheckFileExists = true,
+                CheckPathExists = true,
+
+                DefaultExt = "pas",
+                Filter = "Archivo pas (*.pas)|*.pas",
+                FilterIndex = 2,
+                RestoreDirectory = true,
+
+                ReadOnlyChecked = true,
+                ShowReadOnly = true
+            };
+
+            if (abrirArchivo.ShowDialog() == DialogResult.OK)
+            {
+                string text = System.IO.File.ReadAllText(abrirArchivo.FileName);
+                Program.form.richTextBox1.Text = text;
+                Program.form.richTextBox2.Text = "";
+                Program.form.richTextBox3.Text = "";
+                Program.form.richTextBox4.Text = "";
+                Program.form.richTextBox5.Text = "";
+            }
         }
     }
 }
